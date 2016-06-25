@@ -1,0 +1,178 @@
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+@license
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/iron-icons/av-icons.html">
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <be-uploader></be-uploader>
+
+Example:
+
+    <be-uploader>
+      <h2>Hello be-uploader</h2>
+    </be-uploader>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="be-uploader">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      .inputfiles {
+        visibility: hidden;
+      }
+
+    </style>
+    <content></content>
+    <input type="file" name="image" id="addinputfiles" class="inputfiles"  multiple="{{multiple}}" accept="{{accept}}">
+  </template>
+
+  <script>
+    var arr = [];
+    Polymer({
+      is: 'be-uploader',
+      properties: {
+
+        files: {
+          type: Array,
+          value: []
+        },
+
+        value: {
+          type: Array,
+          value: []
+        },
+
+        accept: {
+          type: String,
+          value: ''
+        },
+
+        multiple: {
+          type: Boolean,
+          notify: false
+        },
+    },
+
+    _createPreviews: function () {
+      var self = this;
+      function findkey(key,str,filearr){
+        for(var k=0; k < filearr.length; k++){
+          if(filearr[k][key] == str){
+            return filearr[k]
+          }
+        }
+      }
+
+      for ( var z= 0; z < this.$.addinputfiles.files.length; z++){
+        arr.push( this.$.addinputfiles.files[z]);
+        console.log('filearray',arr)
+      }
+      for(var j=0; j < this.$.addinputfiles.files.length; j++){
+        this.value.push(this.$.addinputfiles.files[j].name);
+        console.log('value',this.value);
+      }
+      self.querySelector('[preview]').innerHTML = '';
+      for(var i = 0; i < this.value.length; i++){
+        // The image has been uploaded anew
+        if(this.value[i].indexOf("://") == -1){
+          var fileObject = findkey('name',this.value[i],arr)
+          if (fileObject){
+            (function (fileObject){
+              var reader = new FileReader();
+              if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
+                reader.onload = function() {
+                  var image = document.createElement('img');
+                  image.src = reader.result;
+                  self.querySelector('[preview]').appendChild(image);
+                }
+                reader.readAsDataURL(fileObject);
+              }
+              else if((fileObject.type == 'video/mp4')||(fileObject.type == 'video/3gp')||(fileObject.type == 'video/avi')) {
+                reader.onload = function() {
+                  var vid = document.createElement('video');
+                  vid.controls = true;
+                  vid.src = reader.result;
+                  self.querySelector('[preview]').appendChild(vid);
+                }
+                reader.readAsDataURL(fileObject);
+              }
+              else {
+                // TODO Write better error handling as well as error handling for
+                // things already defined in this.value
+                throw (new Error('Error! Unknown file type for ' + fileObject.name));
+              }
+            })(fileObject);
+          }
+        }
+        //Image is in the uploader's `value` property but not uploaded now by the user.
+        else {
+          var fileExt = self.value[i].split('.').pop();
+          if((fileExt == 'jpg')||(fileExt == 'JPG')||(fileExt == 'jpeg')) {
+            var image = document.createElement('img');
+            image.src = self.value[i];
+            self.querySelector('[preview]').appendChild(image);
+          } else if((fileExt == 'mp4')||(fileExt == 'avi')||(fileExt == '3gp')) {
+            var vid = document.createElement('video');
+            vid.controls = true;
+            vid.src = self.value[i];
+            self.querySelectoAY8r('[preview]').appendChild(image);
+          }
+        }
+      }
+    },
+
+    ready: function() {
+      var self = this;
+      for(var l=0; l < self.value.length;l++) {
+        if(self.value[l].indexOf("://") != -1){
+          var fileExt = self.value[l].split('.').pop();
+          if((fileExt == 'jpg')||(fileExt == 'JPG')||(fileExt == 'jpeg')) {
+            var image = document.createElement('img');
+            image.src = self.value[l];
+            self.querySelector('[preview]').appendChild(image);
+          } else if((fileExt == 'mp4')||(fileExt == 'avi')||(fileExt == '3gp')) {
+            var vid = document.createElement('video');
+            vid.controls = true;
+            vid.src = self.value[l];
+            self.querySelector('[preview]').appendChild(image);
+          } else {
+            // alert('Invalid!!!');
+          }
+        }
+      }
+
+      this.querySelector('[uploader]').addEventListener("click", function() {
+        self.$.addinputfiles.click(function(self) {});
+      });
+      this.$.addinputfiles.addEventListener("change", function(){
+        self.fire("change");
+        self._createPreviews();
+      });
+    },
+    attached: function() {
+    },
+
+    detached: function() {
+    },
+    });
+  </script>
+</dom-module>

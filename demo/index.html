@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>be-uploader Demo</title>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="../be-uploader.html">
+    <style>
+      paper-icon-button {
+        background-color: pink;
+      }
+
+      .preview-box {
+        background-color: pink;
+        height: 170px;
+        width: 242px;
+      }
+
+      .preview-box1 {
+        background-color: blue;
+        height: 170px;
+        width: 242px;
+      }
+
+      .preview-box img {
+        object-fit: contain;
+        width: 100px;
+        margin: 10px;
+      }
+
+    </style>
+  </head>
+  <body unresolved>
+
+    <be-uploader accept="image/*" multiple value='["http://localhost:8080/components/be-uploader/demo/a.jpg", "http://localhost:8080/components/be-uploader/demo/b.JPG", "http://localhost:8080/components/be-uploader/demo/rsa.pdf"]'>
+      <paper-icon-button icon="favourite" uploader></paper-icon-button>
+      <div class="preview-box" preview >
+        <!-- <img id="image" class="image-preview" /> -->
+      </div>
+    </be-uploader>
+
+    <!-- <be-uploader accept="image/*" multiple>
+      <paper-icon-button icon="favourite" uploader></paper-icon-button>
+      <div class="preview-box" preview > -->
+        <!-- <img id="image" class="image-preview" /> -->
+      <!-- </div>
+    </be-uploader> -->
+
+
+
+    <!-- <be-uploader accept="images/*">
+    <paper-button icon="heart" uploader></paper-button>
+    <div class="preview-box1 " preview >
+     <img id="imge" class="image-preview"/>
+    </div>
+    </be-uploader> -->
+
+    <script>
+    </script>
+
+  </body>
+</html>
