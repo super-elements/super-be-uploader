@@ -8,10 +8,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/paper-button/paper-button.html">
-<link rel="import" href="bower_components/paper-progress/paper-progress.html">
-<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="bower_components/iron-icons/av-icons.html">
 <!--
 An element providing a solution to no problem in particular.
 
@@ -46,7 +42,7 @@ Example:
   </template>
 
   <script>
-    var arr = [];
+    var filearray = [];
     Polymer({
       is: 'be-uploader',
       properties: {
@@ -82,24 +78,24 @@ Example:
         }
       }
 
-      for ( var z= 0; z < this.$.addinputfiles.files.length; z++){
-        arr.push( this.$.addinputfiles.files[z]);
-        console.log('filearray',arr)
+      for ( var i = 0; i < this.$.addinputfiles.files.length; i++){
+        filearray.push( this.$.addinputfiles.files[i]);
       }
-      for(var j=0; j < this.$.addinputfiles.files.length; j++){
+      for(var j = 0; j < this.$.addinputfiles.files.length; j++){
         this.value.push(this.$.addinputfiles.files[j].name);
-        console.log('value',this.value);
       }
       self.querySelector('[preview]').innerHTML = '';
-      for(var i = 0; i < this.value.length; i++){
-        // The image has been uploaded anew
-        if(this.value[i].indexOf("://") == -1){
-          var fileObject = findkey('name',this.value[i],arr)
+      for(var valueindex = 0; valueindex < this.value.length; valueindex++){
+        // The image has been uploaded a new
+        if(this.value[valueindex].indexOf("://") == -1){
+          var fileObject = findkey('name',this.value[valueindex],filearray)
+          // In fileObject we get the matched filename from this.value and this.file
           if (fileObject){
             (function (fileObject){
               var reader = new FileReader();
               if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
                 reader.onload = function() {
+                  // To create img tag
                   var image = document.createElement('img');
                   image.src = reader.result;
                   self.querySelector('[preview]').appendChild(image);
@@ -108,6 +104,7 @@ Example:
               }
               else if((fileObject.type == 'video/mp4')||(fileObject.type == 'video/3gp')||(fileObject.type == 'video/avi')) {
                 reader.onload = function() {
+                  // To create video Tag
                   var vid = document.createElement('video');
                   vid.controls = true;
                   vid.src = reader.result;
@@ -125,37 +122,42 @@ Example:
         }
         //Image is in the uploader's `value` property but not uploaded now by the user.
         else {
-          var fileExt = self.value[i].split('.').pop();
-          if((fileExt == 'jpg')||(fileExt == 'JPG')||(fileExt == 'jpeg')) {
+          var fileExtension = self.value[valueindex].split('.').pop();
+          if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
+            // create img tag
             var image = document.createElement('img');
-            image.src = self.value[i];
+            image.src = self.value[valueindex];
             self.querySelector('[preview]').appendChild(image);
-          } else if((fileExt == 'mp4')||(fileExt == 'avi')||(fileExt == '3gp')) {
+          } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
             var vid = document.createElement('video');
             vid.controls = true;
-            vid.src = self.value[i];
+            vid.src = self.value[valueindex];
             self.querySelectoAY8r('[preview]').appendChild(image);
           }
+          // else {
+          //   // TODO Write better error handling as well as error handling for
+          //   // things already defined in this.value
+          //   throw (new Error('Unknown File Extension'));
+          // }
         }
       }
     },
 
     ready: function() {
       var self = this;
-      for(var l=0; l < self.value.length;l++) {
-        if(self.value[l].indexOf("://") != -1){
-          var fileExt = self.value[l].split('.').pop();
-          if((fileExt == 'jpg')||(fileExt == 'JPG')||(fileExt == 'jpeg')) {
+      // preview the uploaded files 
+      for(var uploadedvalueindex = 0; uploadedvalueindex  < self.value.length; uploadedvalueindex++) {
+        if(self.value[uploadedvalueindex].indexOf("://") != -1){
+          var fileExtension = self.value[uploadedvalueindex].split('.').pop();
+          if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'png')||(fileExtension == 'jpeg')) {
             var image = document.createElement('img');
-            image.src = self.value[l];
+            image.src = self.value[uploadedvalueindex];
             self.querySelector('[preview]').appendChild(image);
-          } else if((fileExt == 'mp4')||(fileExt == 'avi')||(fileExt == '3gp')) {
+          } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
             var vid = document.createElement('video');
             vid.controls = true;
-            vid.src = self.value[l];
+            vid.src = self.value[uploadedvalueindex];
             self.querySelector('[preview]').appendChild(image);
-          } else {
-            // alert('Invalid!!!');
           }
         }
       }
