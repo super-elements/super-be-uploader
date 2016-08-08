@@ -54,7 +54,8 @@ Example:
 
         value: {
           type: Array,
-          value: []
+          value: [],
+          observer: '_valueChanged'
         },
 
         accept: {
@@ -77,21 +78,14 @@ Example:
           }
         }
       }
-
-      for ( var i = 0; i < this.$.addinputfiles.files.length; i++){
-        filearray.push( this.$.addinputfiles.files[i]);
-      }
-      for(var j = 0; j < this.$.addinputfiles.files.length; j++){
-        this.value.push(this.$.addinputfiles.files[j].name);
-      }
       self.querySelector('[preview]').innerHTML = '';
       for(var valueindex = 0; valueindex < this.value.length; valueindex++){
         // The image has been uploaded a new
         if(this.value[valueindex].indexOf("://") == -1){
           var fileObject = findkey('name',this.value[valueindex],filearray)
           // In fileObject we get the matched filename from this.value and this.file
-          if (fileObject){
-            (function (fileObject){
+          if (fileObject){(
+            function (fileObject){
               var reader = new FileReader();
               if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
                 reader.onload = function() {
@@ -132,7 +126,7 @@ Example:
             var vid = document.createElement('video');
             vid.controls = true;
             vid.src = self.value[valueindex];
-            self.querySelectoAY8r('[preview]').appendChild(image);
+            self.querySelector('[preview]').appendChild(image);
           }
           // else {
           //   // TODO Write better error handling as well as error handling for
@@ -143,30 +137,24 @@ Example:
       }
     },
 
+    _valueChanged: function(newValue, oldValue) {
+      this._createPreviews();
+    },
     ready: function() {
       var self = this;
-      // preview the uploaded files 
-      for(var uploadedvalueindex = 0; uploadedvalueindex  < self.value.length; uploadedvalueindex++) {
-        if(self.value[uploadedvalueindex].indexOf("://") != -1){
-          var fileExtension = self.value[uploadedvalueindex].split('.').pop();
-          if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'png')||(fileExtension == 'jpeg')) {
-            var image = document.createElement('img');
-            image.src = self.value[uploadedvalueindex];
-            self.querySelector('[preview]').appendChild(image);
-          } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
-            var vid = document.createElement('video');
-            vid.controls = true;
-            vid.src = self.value[uploadedvalueindex];
-            self.querySelector('[preview]').appendChild(image);
-          }
-        }
-      }
-
+      self._createPreviews();
       this.querySelector('[uploader]').addEventListener("click", function() {
         self.$.addinputfiles.click(function(self) {});
       });
       this.$.addinputfiles.addEventListener("change", function(){
         self.fire("change");
+        for ( var i = 0; i < self.$.addinputfiles.files.length; i++){
+          filearray.push( self.$.addinputfiles.files[i]);
+          self.files.push(self.$.addinputfiles.files);
+        }
+        for(var j = 0; j < self.$.addinputfiles.files.length; j++){
+          self.value.push(self.$.addinputfiles.files[j].name);
+        }
         self._createPreviews();
       });
     },
