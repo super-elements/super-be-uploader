@@ -71,6 +71,8 @@ Example:
 
     _createPreviews: function () {
       var self = this;
+      console.log('self preview', self);
+      console.log('this preview', this);
       function findkey(key,str,filearr){
         for(var k=0; k < filearr.length; k++){
           if(filearr[k][key] == str){
@@ -78,10 +80,12 @@ Example:
           }
         }
       }
-      self.querySelector('[preview]').innerHTML = '';
+      //console.log('preview',self.querySelector('[preview]').innerHTML = '');
+      //self.querySelector('[preview]').innerHTML = '';
       for(var valueindex = 0; valueindex < this.value.length; valueindex++){
         // The image has been uploaded a new
         if(this.value[valueindex].indexOf("://") == -1){
+          self.querySelector('[preview]').innerHTML = '';
           var fileObject = findkey('name',this.value[valueindex],filearray)
           // In fileObject we get the matched filename from this.value and this.file
           if (fileObject){(
@@ -140,9 +144,11 @@ Example:
     _valueChanged: function(newValue, oldValue) {
       this._createPreviews();
     },
+
     ready: function() {
       var self = this;
       self._createPreviews();
+      if(this.querySelector('[uploader]')){
       this.querySelector('[uploader]').addEventListener("click", function() {
         self.$.addinputfiles.click(function(self) {});
       });
@@ -157,7 +163,9 @@ Example:
         }
         self._createPreviews();
       });
+  }
     },
+
     attached: function() {
     },
 
