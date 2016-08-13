@@ -71,8 +71,6 @@ Example:
 
     _createPreviews: function () {
       var self = this;
-      console.log('self preview', self);
-      console.log('this preview', this);
       function findkey(key,str,filearr){
         for(var k=0; k < filearr.length; k++){
           if(filearr[k][key] == str){
@@ -81,12 +79,12 @@ Example:
         }
       }
       //console.log('preview',self.querySelector('[preview]').innerHTML = '');
-      //self.querySelector('[preview]').innerHTML = '';
+      self.querySelector('[preview]').innerHTML = '';
       for(var valueindex = 0; valueindex < this.value.length; valueindex++){
         // The image has been uploaded a new
-        if(this.value[valueindex].indexOf("://") == -1){
+        if(this.value[valueindex].name.indexOf("://") == -1){
           self.querySelector('[preview]').innerHTML = '';
-          var fileObject = findkey('name',this.value[valueindex],filearray)
+          var fileObject = findkey('name',this.value[valueindex].name,filearray)
           // In fileObject we get the matched filename from this.value and this.file
           if (fileObject){(
             function (fileObject){
@@ -120,16 +118,16 @@ Example:
         }
         //Image is in the uploader's `value` property but not uploaded now by the user.
         else {
-          var fileExtension = self.value[valueindex].split('.').pop();
+          var fileExtension = self.value[valueindex].name.split('.').pop();
           if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
             // create img tag
             var image = document.createElement('img');
-            image.src = self.value[valueindex];
+            image.src = self.value[valueindex].name;
             self.querySelector('[preview]').appendChild(image);
           } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
             var vid = document.createElement('video');
             vid.controls = true;
-            vid.src = self.value[valueindex];
+            vid.src = self.value[valueindex].name;
             self.querySelector('[preview]').appendChild(image);
           }
           // else {
@@ -149,21 +147,21 @@ Example:
       var self = this;
       self._createPreviews();
       if(this.querySelector('[uploader]')){
-      this.querySelector('[uploader]').addEventListener("click", function() {
-        self.$.addinputfiles.click(function(self) {});
-      });
-      this.$.addinputfiles.addEventListener("change", function(){
-        self.fire("change");
-        for ( var i = 0; i < self.$.addinputfiles.files.length; i++){
-          filearray.push( self.$.addinputfiles.files[i]);
-          self.files.push(self.$.addinputfiles.files);
-        }
-        for(var j = 0; j < self.$.addinputfiles.files.length; j++){
-          self.value.push(self.$.addinputfiles.files[j].name);
-        }
-        self._createPreviews();
-      });
-  }
+        this.querySelector('[uploader]').addEventListener("click", function() {
+          self.$.addinputfiles.click(function(self) {});
+        });
+        this.$.addinputfiles.addEventListener("change", function(){
+          self.fire("change");
+          for ( var i = 0; i < self.$.addinputfiles.files.length; i++){
+            filearray.push( self.$.addinputfiles.files[i]);
+            self.files.push(self.$.addinputfiles.files);
+          }
+          for(var j = 0; j < self.$.addinputfiles.files.length; j++){
+            self.value.push({'name':(self.$.addinputfiles.files[j].name)});
+          }
+          self._createPreviews();
+        });
+      }
     },
 
     attached: function() {
