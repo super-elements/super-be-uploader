@@ -80,63 +80,65 @@ Example:
       }
       //console.log('preview',self.querySelector('[preview]').innerHTML = '');
       // self.querySelector('[preview]').innerHTML = '';
-      for(var valueindex = 0; valueindex < this.value.length; valueindex++){
+      for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
         // The image has been uploaded a new
-        if(this.value[valueindex].name.indexOf("://") == -1){
-          self.querySelector('[preview]').innerHTML = '';
-          var fileObject = findkey('name',this.value[valueindex].name,filearray)
-          // In fileObject we get the matched filename from this.value and this.file
-          if (fileObject){(
-            function (fileObject){
-              var reader = new FileReader();
-              if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
-                reader.onload = function() {
-                  // To create img tag
-                  var image = document.createElement('img');
-                  image.src = reader.result;
-                  self.querySelector('[preview]').appendChild(image);
+        if(this.value[valueindex].name == ''){
+         } else if(this.value[valueindex].name.indexOf("://") == -1) {
+           self.querySelector('[preview]').innerHTML = '';
+            var fileObject = findkey('name',this.value[valueindex].name,filearray)
+            // In fileObject we get the matched filename from this.value and this.file
+            if (fileObject){(
+              function (fileObject){
+                var reader = new FileReader();
+                if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
+                  reader.onload = function() {
+                    // To create img tag
+                    var image = document.createElement('img');
+                    image.src = reader.result;
+                    self.querySelector('[preview]').appendChild(image);
+                  }
+                  reader.readAsDataURL(fileObject);
                 }
-                reader.readAsDataURL(fileObject);
-              }
-              else if((fileObject.type == 'video/mp4')||(fileObject.type == 'video/3gp')||(fileObject.type == 'video/avi')) {
-                reader.onload = function() {
-                  // To create video Tag
-                  var vid = document.createElement('video');
-                  vid.controls = true;
-                  vid.src = reader.result;
-                  self.querySelector('[preview]').appendChild(vid);
+                else if((fileObject.type == 'video/mp4')||(fileObject.type == 'video/3gp')||(fileObject.type == 'video/avi')) {
+                  reader.onload = function() {
+                    // To create video Tag
+                    var vid = document.createElement('video');
+                    vid.controls = true;
+                    vid.src = reader.result;
+                    self.querySelector('[preview]').appendChild(vid);
+                  }
+                  reader.readAsDataURL(fileObject);
                 }
-                reader.readAsDataURL(fileObject);
-              }
-              else {
-                // TODO Write better error handling as well as error handling for
-                // things already defined in this.value
-                throw (new Error('Error! Unknown file type for ' + fileObject.name));
-              }
-            })(fileObject);
+                else {
+                  // TODO Write better error handling as well as error handling for
+                  // things already defined in this.value
+                  throw (new Error('Error! Unknown file type for ' + fileObject.name));
+                }
+              })(fileObject);
+            }
+          }
+          //Image is in the uploader's `value` property but not uploaded now by the user.
+          else {
+            var fileExtension = self.value[valueindex].name.split('.').pop();
+            if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
+              self.querySelector('[preview]').innerHTML = '';
+              // create img tag.
+              var image = document.createElement('img');
+              image.src = self.value[valueindex].name;
+              self.querySelector('[preview]').appendChild(image);
+            } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
+              var vid = document.createElement('video');
+              vid.controls = true;
+              vid.src = self.value[valueindex].name;
+              self.querySelector('[preview]').appendChild(image);
+            }
+            // else {
+            //   // TODO Write better error handling as well as error handling for
+            //   // things already defined in this.value
+            //   throw (new Error('Unknown File Extension'));
+            // }
           }
         }
-        //Image is in the uploader's `value` property but not uploaded now by the user.
-        else {
-          var fileExtension = self.value[valueindex].name.split('.').pop();
-          if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
-            // create img tag.
-            var image = document.createElement('img');
-            image.src = self.value[valueindex].name;
-            self.querySelector('[preview]').appendChild(image);
-          } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
-            var vid = document.createElement('video');
-            vid.controls = true;
-            vid.src = self.value[valueindex].name;
-            self.querySelector('[preview]').appendChild(image);
-          }
-          // else {
-          //   // TODO Write better error handling as well as error handling for
-          //   // things already defined in this.value
-          //   throw (new Error('Unknown File Extension'));
-          // }
-        }
-      }
     },
 
     _valueChanged: function(newValue, oldValue) {
