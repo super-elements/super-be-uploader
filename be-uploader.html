@@ -42,10 +42,15 @@ Example:
   </template>
 
   <script>
-    var filearray = [];
     Polymer({
       is: 'be-uploader',
       properties: {
+
+        multiple: {
+          type: Boolean,
+          notify: false,
+          value: false
+        },
 
         files: {
           type: Array,
@@ -61,12 +66,7 @@ Example:
         accept: {
           type: String,
           value: ''
-        },
-
-        multiple: {
-          type: Boolean,
-          notify: false
-        },
+        }
     },
 
     _createPreviews: function () {
@@ -78,21 +78,24 @@ Example:
           }
         }
       }
-      //console.log('preview',self.querySelector('[preview]').innerHTML = '');
-      // self.querySelector('[preview]').innerHTML = '';
       for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
+
         // The image has been uploaded a new
         if(this.value[valueindex].name == ''){
-         } else if(this.value[valueindex].name.indexOf("://") == -1) {
+        }
+        // We have to display an already uploaded file. The name of the file
+        // will have an absolute path and therefore have the `://` as part of the
+        // protocol -> http / ftp etc.
+        else if(this.value[valueindex].name.indexOf("://") == -1) {
            self.querySelector('[preview]').innerHTML = '';
-            var fileObject = findkey('name',this.value[valueindex].name,filearray)
-            // In fileObject we get the matched filename from this.value and this.file
-            if (fileObject){(
-              function (fileObject){
+
+           // Match filename from this.value and this.file
+            var fileObject = findkey('name',this.value[valueindex].name, self.files)
+            if (fileObject) {
+              (function (fileObject){
                 var reader = new FileReader();
                 if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
                   reader.onload = function() {
-                    // To create img tag
                     var image = document.createElement('img');
                     image.src = reader.result;
                     self.querySelector('[preview]').appendChild(image);
@@ -122,7 +125,6 @@ Example:
             var fileExtension = self.value[valueindex].name.split('.').pop();
             if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
               self.querySelector('[preview]').innerHTML = '';
-              // create img tag.
               var image = document.createElement('img');
               image.src = self.value[valueindex].name;
               self.querySelector('[preview]').appendChild(image);
@@ -154,9 +156,15 @@ Example:
         });
         this.$.addinputfiles.addEventListener("change", function(){
           self.fire("change");
-          for ( var i = 0; i < self.$.addinputfiles.files.length; i++){
-            filearray.push( self.$.addinputfiles.files[i]);
-            self.files.push(self.$.addinputfiles.files);
+
+          // Incase we need to upload one at a time.
+          // Simply reset `value` and `file`
+          if (!this.multiple){
+            self.files = [];
+            self.value = [];
+          }
+          for (var i = 0; i < self.$.addinputfiles.files.length; i++) {
+            self.files.push(self.$.addinputfiles.files[i]);
           }
           for(var j = 0; j < self.$.addinputfiles.files.length; j++){
             self.value.push({'name':(self.$.addinputfiles.files[j].name)});
@@ -171,6 +179,6 @@ Example:
 
     detached: function() {
     },
-    });
+  });
   </script>
 </dom-module>
