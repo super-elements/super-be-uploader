@@ -81,7 +81,7 @@ Example:
       for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
 
         // The image has been uploaded a new
-        if(this.value[valueindex].name == ''){
+        if(this.value[valueindex].name == '' || this.value[valueindex].name == null){
         }
         // We have to display an already uploaded file. The name of the file
         // will have an absolute path and therefore have the `://` as part of the
