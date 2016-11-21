@@ -79,26 +79,26 @@ Example:
         }
       }
       for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
-
         // The image has been uploaded a new
-        if(this.value[valueindex].name == '' || this.value[valueindex].name == null){
+        if(this.value[valueindex].uploaderimage == '' || this.value[valueindex].uploaderimage == null){
+
         }
         // We have to display an already uploaded file. The name of the file
         // will have an absolute path and therefore have the `://` as part of the
         // protocol -> http / ftp etc.
-        else if(this.value[valueindex].name.indexOf("://") == -1) {
+        else if(this.value[valueindex].uploaderimage.indexOf("://") == -1) {
            self.querySelector('[preview]').innerHTML = '';
 
            // Match filename from this.value and this.file
-            var fileObject = findkey('name',this.value[valueindex].name, self.files)
+            var fileObject = findkey('name',this.value[valueindex].uploaderimage, self.files)
             if (fileObject) {
               (function (fileObject){
                 var reader = new FileReader();
                 if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
                   reader.onload = function() {
-                    var image = document.createElement('img');
-                    image.src = reader.result;
-                    self.querySelector('[preview]').appendChild(image);
+                    var imageTag = document.createElement('img');
+                    imageTag.src = reader.result;
+                    self.querySelector('[preview]').appendChild(imageTag);
                   }
                   reader.readAsDataURL(fileObject);
                 }
@@ -115,24 +115,24 @@ Example:
                 else {
                   // TODO Write better error handling as well as error handling for
                   // things already defined in this.value
-                  throw (new Error('Error! Unknown file type for ' + fileObject.name));
+                  throw (new Error('Error! Unknown file type for ' + fileObject.uploaderimage));
                 }
               })(fileObject);
             }
           }
           //Image is in the uploader's `value` property but not uploaded now by the user.
           else {
-            var fileExtension = self.value[valueindex].name.split('.').pop();
+            var fileExtension = self.value[valueindex].uploaderimage.split('.').pop();
             if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
               self.querySelector('[preview]').innerHTML = '';
-              var image = document.createElement('img');
-              image.src = self.value[valueindex].name;
-              self.querySelector('[preview]').appendChild(image);
+              var imageTag = document.createElement('img');
+              imageTag.src = self.value[valueindex].uploaderimage;
+              self.querySelector('[preview]').appendChild(imageTag);
             } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
               var vid = document.createElement('video');
               vid.controls = true;
-              vid.src = self.value[valueindex].name;
-              self.querySelector('[preview]').appendChild(image);
+              vid.src = self.value[valueindex].uploaderimage;
+              self.querySelector('[preview]').appendChild(imageTag);
             }
             // else {
             //   // TODO Write better error handling as well as error handling for
@@ -167,7 +167,8 @@ Example:
             self.files.push(self.$.addinputfiles.files[i]);
           }
           for(var j = 0; j < self.$.addinputfiles.files.length; j++){
-            self.value.push({'name':(self.$.addinputfiles.files[j].name)});
+            self.value.push({'uploaderimage':(self.$.addinputfiles.files[j].name)});
+            console.log('self.value', self.value);
           }
           self._createPreviews();
         });
