@@ -98,6 +98,8 @@ Example:
                   reader.onload = function() {
                     var imageTag = document.createElement('img');
                     imageTag.src = reader.result;
+                    imageTag.style.width = '100%';
+                    imageTag.style.height= '100%';
                     self.querySelector('[preview]').appendChild(imageTag);
                   }
                   reader.readAsDataURL(fileObject);
@@ -108,6 +110,8 @@ Example:
                     var vid = document.createElement('video');
                     vid.controls = true;
                     vid.src = reader.result;
+                    vid.style.width = '100%';
+                    vid.style.height= '100%';
                     self.querySelector('[preview]').appendChild(vid);
                   }
                   reader.readAsDataURL(fileObject);
@@ -127,11 +131,15 @@ Example:
               self.querySelector('[preview]').innerHTML = '';
               var imageTag = document.createElement('img');
               imageTag.src = self.value[valueindex].uploaderimage;
+              imageTag.style.width = '100%';
+              imageTag.style.height= '100%';
               self.querySelector('[preview]').appendChild(imageTag);
             } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
               var vid = document.createElement('video');
               vid.controls = true;
               vid.src = self.value[valueindex].uploaderimage;
+              vid.style.width = '100%';
+              vid.style.height= '100%';
               self.querySelector('[preview]').appendChild(imageTag);
             }
             // else {
