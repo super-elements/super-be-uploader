@@ -1,0 +1,179 @@
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+@license
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <be-uploader></be-uploader>
+
+Example:
+
+    <be-uploader>
+      <h2>Hello be-uploader</h2>
+    </be-uploader>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="be-uploader">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      .inputfiles {
+        visibility: hidden;
+      }
+
+    </style>
+    <content></content>
+    <input type="file" name="image" id="addinputfiles" class="inputfiles"  multiple="{{multiple}}" accept="{{accept}}">
+  </template>
+
+  <script>
+    Polymer({
+      is: 'be-uploader',
+      properties: {
+
+        multiple: {
+          type: Boolean,
+          notify: false,
+          value: false
+        },
+
+        files: {
+          type: Array,
+          value: []
+        },
+
+        value: {
+          type: Array,
+          value: [],
+          observer: '_valueChanged'
+        },
+
+        accept: {
+          type: String,
+          value: ''
+        }
+    },
+
+    _createPreviews: function () {
+      var self = this;
+      function findkey(key,str,filearr){
+        for(var k=0; k < filearr.length; k++){
+          if(filearr[k][key] == str){
+            return filearr[k]
+          }
+        }
+      }
+      for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
+        // The image has been uploaded a new
+        if(this.value[valueindex].uploaderimage == '' || this.value[valueindex].uploaderimage == null){
+
+        }
+        // We have to display an already uploaded file. The name of the file
+        // will have an absolute path and therefore have the `://` as part of the
+        // protocol -> http / ftp etc.
+        else if(this.value[valueindex].uploaderimage.indexOf("://") == -1) {
+           self.querySelector('[preview]').innerHTML = '';
+
+           // Match filename from this.value and this.file
+            var fileObject = findkey('name',this.value[valueindex].uploaderimage, self.files)
+            if (fileObject) {
+              (function (fileObject){
+                var reader = new FileReader();
+                if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
+                  reader.onload = function() {
+                    var imageTag = document.createElement('img');
+                    imageTag.src = reader.result;
+                    self.querySelector('[preview]').appendChild(imageTag);
+                  }
+                  reader.readAsDataURL(fileObject);
+                }
+                else if((fileObject.type == 'video/mp4')||(fileObject.type == 'video/3gp')||(fileObject.type == 'video/avi')) {
+                  reader.onload = function() {
+                    // To create video Tag
+                    var vid = document.createElement('video');
+                    vid.controls = true;
+                    vid.src = reader.result;
+                    self.querySelector('[preview]').appendChild(vid);
+                  }
+                  reader.readAsDataURL(fileObject);
+                }
+                else {
+                  // TODO Write better error handling as well as error handling for
+                  // things already defined in this.value
+                  throw (new Error('Error! Unknown file type for ' + fileObject.uploaderimage));
+                }
+              })(fileObject);
+            }
+          }
+          //Image is in the uploader's `value` property but not uploaded now by the user.
+          else {
+            var fileExtension = self.value[valueindex].uploaderimage.split('.').pop();
+            if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
+              self.querySelector('[preview]').innerHTML = '';
+              var imageTag = document.createElement('img');
+              imageTag.src = self.value[valueindex].uploaderimage;
+              self.querySelector('[preview]').appendChild(imageTag);
+            } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
+              var vid = document.createElement('video');
+              vid.controls = true;
+              vid.src = self.value[valueindex].uploaderimage;
+              self.querySelector('[preview]').appendChild(imageTag);
+            }
+            // else {
+            //   // TODO Write better error handling as well as error handling for
+            //   // things already defined in this.value
+            //   throw (new Error('Unknown File Extension'));
+            // }
+          }
+        }
+    },
+
+    _valueChanged: function(newValue, oldValue) {
+      this._createPreviews();
+    },
+
+    ready: function() {
+      var self = this;
+      self._createPreviews();
+      if(this.querySelector('[uploader]')){
+        this.querySelector('[uploader]').addEventListener("click", function() {
+          self.$.addinputfiles.click(function(self) {});
+        });
+        this.$.addinputfiles.addEventListener("change", function(){
+          self.fire("change");
+
+          // Incase we need to upload one at a time.
+          // Simply reset `value` and `file`
+          if (!this.multiple){
+            self.files = [];
+            self.value = [];
+          }
+          for (var i = 0; i < self.$.addinputfiles.files.length; i++) {
+            self.files.push(self.$.addinputfiles.files[i]);
+          }
+          for(var j = 0; j < self.$.addinputfiles.files.length; j++){
+            self.value.push({'uploaderimage':(self.$.addinputfiles.files[j].name)});
+            console.log('self.value', self.value);
+          }
+          self._createPreviews();
+        });
+      }
+    },
+  });
+  </script>
+</dom-module>
