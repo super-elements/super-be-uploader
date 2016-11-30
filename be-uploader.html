@@ -66,6 +66,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       }
+      if(this.value == '' || this.value == null){
+        self.querySelector('[preview]').innerHTML = '';
+      }
       for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
         // The image has been uploaded a new
         if(this.value[valueindex].uploaderimage == '' || this.value[valueindex].uploaderimage == null){
@@ -141,6 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _valueChanged: function(newValue, oldValue) {
       this._createPreviews();
+
     },
 
     ready: function() {
