@@ -9,18 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../polymer/polymer.html">
 <!--
-An element providing a solution to no problem in particular.
-
-Example:
-
-    <be-uploader></be-uploader>
-
-Example:
-
-    <be-uploader>
-      <h2>Hello be-uploader</h2>
-    </be-uploader>
-
 @demo demo/index.html
 @hero hero.svg
 -->
@@ -78,10 +66,13 @@ Example:
           }
         }
       }
+      if(this.value == '' || this.value == null){
+        self.querySelector('[preview]').innerHTML = '';
+      }
       for(var valueindex = 0; valueindex < this.value.length; valueindex++) {
         // The image has been uploaded a new
         if(this.value[valueindex].uploaderimage == '' || this.value[valueindex].uploaderimage == null){
-
+            self.querySelector('[preview]').innerHTML = '';
         }
         // We have to display an already uploaded file. The name of the file
         // will have an absolute path and therefore have the `://` as part of the
@@ -98,6 +89,8 @@ Example:
                   reader.onload = function() {
                     var imageTag = document.createElement('img');
                     imageTag.src = reader.result;
+                    imageTag.style.width = '100%';
+                    imageTag.style.height= '100%';
                     self.querySelector('[preview]').appendChild(imageTag);
                   }
                   reader.readAsDataURL(fileObject);
@@ -108,6 +101,8 @@ Example:
                     var vid = document.createElement('video');
                     vid.controls = true;
                     vid.src = reader.result;
+                    vid.style.width = '100%';
+                    vid.style.height= '100%';
                     self.querySelector('[preview]').appendChild(vid);
                   }
                   reader.readAsDataURL(fileObject);
@@ -127,11 +122,15 @@ Example:
               self.querySelector('[preview]').innerHTML = '';
               var imageTag = document.createElement('img');
               imageTag.src = self.value[valueindex].uploaderimage;
+              imageTag.style.width = '100%';
+              imageTag.style.height= '100%';
               self.querySelector('[preview]').appendChild(imageTag);
             } else if((fileExtension == 'mp4')||(fileExtension == 'avi')||(fileExtension == '3gp')) {
               var vid = document.createElement('video');
               vid.controls = true;
               vid.src = self.value[valueindex].uploaderimage;
+              vid.style.width = '100%';
+              vid.style.height= '100%';
               self.querySelector('[preview]').appendChild(imageTag);
             }
             // else {
@@ -145,6 +144,7 @@ Example:
 
     _valueChanged: function(newValue, oldValue) {
       this._createPreviews();
+
     },
 
     ready: function() {
@@ -168,7 +168,6 @@ Example:
           }
           for(var j = 0; j < self.$.addinputfiles.files.length; j++){
             self.value.push({'uploaderimage':(self.$.addinputfiles.files[j].name)});
-            console.log('self.value', self.value);
           }
           self._createPreviews();
         });
