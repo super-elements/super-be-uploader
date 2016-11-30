@@ -9,18 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../polymer/polymer.html">
 <!--
-An element providing a solution to no problem in particular.
-
-Example:
-
-    <be-uploader></be-uploader>
-
-Example:
-
-    <be-uploader>
-      <h2>Hello be-uploader</h2>
-    </be-uploader>
-
 @demo demo/index.html
 @hero hero.svg
 -->
@@ -176,17 +164,10 @@ Example:
           }
           for(var j = 0; j < self.$.addinputfiles.files.length; j++){
             self.value.push({'uploaderimage':(self.$.addinputfiles.files[j].name)});
-            console.log('self.value', self.value);
           }
           self._createPreviews();
         });
       }
-    },
-
-    attached: function() {
-    },
-
-    detached: function() {
     },
   });
   </script>
