@@ -85,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (fileObject) {
               (function (fileObject){
                 var reader = new FileReader();
-                if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/png')||(fileObject.type == 'image/jpeg')) {
+                if((fileObject.type == 'image/jpg')||(fileObject.type == 'image/JPG')||(fileObject.type == 'image/PNG')||(fileObject.type == 'image/png')||(fileObject.type == 'image/JPEG')||(fileObject.type == 'image/jpeg')) {
                   reader.onload = function() {
                     var imageTag = document.createElement('img');
                     imageTag.src = reader.result;
