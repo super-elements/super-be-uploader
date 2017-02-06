@@ -33,24 +33,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'be-uploader',
       properties: {
-
+        /**
+        *
+        if a user wants to upload multiple photo then we use multiple. By default its false
+        *
+        */
         multiple: {
           type: Boolean,
           notify: false,
           value: false
         },
-
+        /**
+        *
+        files is used to get all the details of the file.
+        *
+        */
         files: {
           type: Array,
           value: []
         },
-
+        /**
+        *
+        value is a property to define the value of images or videos
+        *
+        */
         value: {
           type: Array,
           value: [],
           observer: '_valueChanged'
         },
-
+        /**
+        *
+        accept is a property to define the type of  images, videos or both
+        *
+        */
         accept: {
           type: String,
           value: ''
