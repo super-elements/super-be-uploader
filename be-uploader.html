@@ -118,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           //Image is in the uploader's `value` property but not uploaded now by the user.
           else {
             var fileExtension = self.value[valueindex].uploaderimage.split('.').pop();
-            if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'png')) {
+            if((fileExtension == 'jpg')||(fileExtension == 'JPG')||(fileExtension == 'jpeg')||(fileExtension == 'JPEG')||(fileExtension == 'PNG')||(fileExtension == 'png')) {
               self.querySelector('[preview]').innerHTML = '';
               var imageTag = document.createElement('img');
               imageTag.src = self.value[valueindex].uploaderimage;
