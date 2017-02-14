@@ -1,0 +1,33 @@
+{
+  "name": "be-uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaurav21r/be-uploader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaurav21r/be-uploader/issues"
+  },
+  "homepage": "https://github.com/gaurav21r/be-uploader#readme",
+  "devDependencies": {
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-react": "^6.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.1",
+    "eslint-plugin-html": "^1.5.3",
+    "grunt-eslint": "^19.0.0",
+    "grunt-stylelint": "^0.6.0",
+    "stylelint-config-standard": "^13.0.0",
+    "htmlhint": "^0.9.13"
+  }
+}
