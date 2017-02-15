@@ -17,26 +17,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../be-uploader.html">
+    <link rel="import" href="../super-uploader.html">
   </head>
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <test-fixture id="be-uploader-fixture">
+    <test-fixture id="super-uploader-fixture">
       <template>
-        <be-uploader>
-          <h2>be-uploader</h2>
-        </be-uploader>
+        <super-uploader>
+          <h2>super-uploader</h2>
+        </super-uploader>
       </template>
     </test-fixture>
 
     <script>
-      suite('<be-uploader>', function() {
+      suite('<super-uploader>', function() {
 
         var myEl;
 
         setup(function() {
-          myEl = fixture('be-uploader-fixture');
+          myEl = fixture('super-uploader-fixture');
         });
 
         test('defines the "author" property', function() {
@@ -45,14 +45,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         test('says hello', function() {
-          assert.equal(myEl.sayHello(), 'be-uploader says, Hello World!');
+          assert.equal(myEl.sayHello(), 'super-uploader says, Hello World!');
 
           var greetings = myEl.sayHello('greetings Earthlings');
-          assert.equal(greetings, 'be-uploader says, greetings Earthlings');
+          assert.equal(greetings, 'super-uploader says, greetings Earthlings');
         });
 
         test('fires lasers', function(done) {
-          myEl.addEventListener('be-uploader-lasers', function(event) {
+          myEl.addEventListener('super-uploader-lasers', function(event) {
             assert.equal(event.detail.sound, 'Pew pew!');
             done();
           });
