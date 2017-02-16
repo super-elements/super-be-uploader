@@ -10,23 +10,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <!--
   `super-uploader` allows user to upload Images,video with differents file Extension.
-   Example
-   <super-uploader> </super-uploader>
-   use accept to define the type of file you want to upload.
-   Example
-   <super-uploader accept="image/*"> </super-uploader>
-      How to use `super-uploader`
+
+Example:
+
+    <super-uploader> </super-uploader>
+
+
+Example:
+
+    Use its accept property to define the type of file you want to upload.
+
+      <super-uploader accept="image/*"> </super-uploader>
+
+Example:
+
+    How to use `super-uploader` ?
+
     <super-uploader accept="image/*" value ='[{"uploaderimage": "http://localhost:8080/components/super-uploader/demo/a.jpg"}]' >
+
     User can add any button according to there needs.It is necessary to include `uploader`.
+
     <paper-icon-button icon="favourite" uploader></paper-icon-button>
     div is used to show the images or videos. It is necessary to use `Preview`.
     <div class="preview-box" preview > </div>
-  </super-uploader>
-   `Limitations`
-   File Extension It supports are png,jpg, jpeg,avi.
-   We use two fire events uploader and Preview.
-   use Key name `uploaderimage`.
-   multiple upload don't support.
+    </super-uploader>
+
     @demo demo/index.html
   -->
 <dom-module id="super-uploader">
@@ -51,7 +59,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'super-uploader',
       properties: {
         /**
-        *To upload multiple files.By default its value is False.
+        * To upload multiple files.
+        *
+        * @attribute multiple
+        * @type Boolean
+        * @default 'false'
+        * @TODO
         */
         multiple: {
           type: Boolean,
@@ -59,14 +72,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: false
         },
         /**
-        *This contain the information of file like originalName, fileExtension, changedFileName etc.
+        * This contain the information of file like originalName, fileExtension, changedFileName etc.
+        *
+        * @attribute files
+        * @type Array
         */
         files: {
           type: Array,
           value: []
         },
         /**
-        *This stores the Files name . Previous File store in an HTTP format.
+        *This stores the Files name in the form of array of object with a key name `uploaderimage` . Previous File store in an HTTP format.
         *Current Files stores with a current filename.
         */
         value: {
@@ -75,12 +91,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_valueChanged'
         },
         /**
-        * Define the types of files
+        * Define the types of files that server wants.
         */
         accept: {
           type: String,
           value: ''
         }
+    },
+
+    // This fires when filename add in the value .
+    _valueChanged: function() {
+      this._createPreviews();
     },
 
     _createPreviews: function () {
@@ -168,10 +189,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
     },
 
-    _valueChanged: function(newValue, oldValue) {
-      this._createPreviews();
-    },
-
     ready: function() {
       var self = this;
       /* to show the files coming from database */
@@ -192,7 +209,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             self.files.push(self.$.addinputfiles.files[i]);
           }
           for(var j = 0; j < self.$.addinputfiles.files.length; j++){
-            // push the filename in value property.
+            // push the filename in value property.Use key name `uploaderimage`. Due to some limitations.
             self.value.push({'uploaderimage':(self.$.addinputfiles.files[j].name)});
           }
           self._createPreviews();
