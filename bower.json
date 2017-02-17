@@ -1,5 +1,5 @@
 {
-  "name": "be-uploader",
+  "name": "super-uploader",
   "version": "1.0.7",
   "authors": [
     "Anonymous <anonymous@example.com>"
@@ -10,7 +10,7 @@
     "polymer",
     "seed"
   ],
-  "main": "be-uploader.html",
+  "main": "super-uploader.html",
   "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/<USERNAME>/seed-element/",
   "ignore": [

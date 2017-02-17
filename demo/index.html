@@ -12,11 +12,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>be-uploader Demo</title>
+    <title>super-uploader Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../../iron-icons/iron-icons.html">
-    <link rel="import" href="../be-uploader.html">
+    <link rel="import" href="../super-uploader.html">
     <style>
       paper-icon-button {
         background-color: pink;
@@ -43,15 +43,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body unresolved>
-    <be-uploader accept="image/*" multiple  value='[{"name": "http://localhost:8080/components/be-uploader/demo/a.jpg"}, {"name":"http://localhost:8080/components/be-uploader/demo/b.JPG"}, {"name": "http://localhost:8080/components/be-uploader/demo/rsa.pdf"}]'>
+    <super-uploader accept="image/*" multiple  value='[{"name": "http://localhost:8080/components/super-uploader/demo/a.jpg"}, {"name":"http://localhost:8080/components/super-uploader/demo/b.JPG"}, {"name": "http://localhost:8080/components/super-uploader/demo/rsa.pdf"}]'>
       <paper-icon-button icon="favourite" uploader></paper-icon-button>
       <div class="preview-box" preview > </div>
-    </be-uploader>
+    </super-uploader>
 
-    <be-uploader accept="image/*" value='[{"name": "http://localhost:8080/components/be-uploader/demo/a.jpg"}, {"name":"http://localhost:8080/components/be-uploader/demo/b.JPG"}, {"name": "http://localhost:8080/components/be-uploader/demo/rsa.pdf"}]'>
+    <super-uploader accept="image/*" value='[{"name": "http://localhost:8080/components/super-uploader/demo/a.jpg"}, {"name":"http://localhost:8080/components/super-uploader/demo/b.JPG"}, {"name": "http://localhost:8080/components/super-uploader/demo/rsa.pdf"}]'>
       <paper-icon-button icon="favourite" uploader></paper-icon-button>
       <div class="preview-box" preview > </div>
-    </be-uploader>
+    </super-uploader>
 
   </body>
 </html>
