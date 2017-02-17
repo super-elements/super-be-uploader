@@ -1,6 +1,6 @@
 {
   "name": "super-uploader",
-  "version": "1.0.7",
+  "version": "v0.0.1",
   "authors": [
     "Anonymous <anonymous@example.com>"
   ],
@@ -11,7 +11,7 @@
     "seed"
   ],
   "main": "super-uploader.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/<USERNAME>/seed-element/",
   "ignore": [
     "/.*",
