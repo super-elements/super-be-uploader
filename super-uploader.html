@@ -79,7 +79,8 @@ Example:
         */
         files: {
           type: Array,
-          value: []
+          value: [],
+          observer: '_filesChanged'
         },
         /**
         *This stores the Files name in the form of array of object with a key name `uploaderimage` . Previous File store in an HTTP format.
@@ -102,6 +103,9 @@ Example:
     // This fires when filename add in the value .
     _valueChanged: function() {
       this._createPreviews();
+    },
+    _filesChanged: function(){
+      this.fire('filesChanged');
     },
 
     _createPreviews: function () {
